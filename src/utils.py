@@ -61,19 +61,11 @@ def get_datasets(mean, std, batch_size=32): #  feed 32 images at a time
     return train_data, val_data, test_data
 
 # Flatten the images, because sklearn models expects 1D feature vectors, not 2D images
-def prepare_sklearn_data(dataset):
-    mean, std = normalize_dataset()
-    get_datasets
-    # flatten each image from (3, 28, 28) to (2352,)
-    images = np.stack([dataset[i][0].numpy().reshape(-1) for i in range(len(dataset))])
-    labels = np.array([dataset[i][1] for i in range(len(dataset))])
+def prepare_sklearn_data(dataset) :
+    images = np.stack([np.array(dataset[i][0]) for i in range(len(dataset))])
+    labels = np.array([dataset[i][1].item() for i in range(len(dataset))])
+    # flatten each image from (3, 28, 28) to (2352)
+    images = images.reshape(len(dataset), -1)
+    # normalize to [0, 1]
+    images = images / 255.0
     return images, labels
-
-
-#def print_results(true, pred):
-#    acc = accuracy_score(true, pred)
-#    print(f"LR val accuracy: {acc:.4f}")
-#    print(f"One-off accuracy: {accuracy_off1(true, pred):.4f}")
-#    print(f"Average mean absolute error (AMAE): {amae(true, pred):.4f}")
-#    print(f"Maximum mean absolute error (MMAE): {mmae(true, pred):.4f}")
-#    print(f"Quadratic weighted kappa: {cohen_kappa_score(true, pred, weights='quadratic'):.4f}\n")

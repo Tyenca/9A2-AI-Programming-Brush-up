@@ -1,5 +1,5 @@
 #Import packages
-from src.utils import normalize_dataset, get_datasets, prepare_sklearn_data
+from utils import normalize_dataset, get_datasets, prepare_sklearn_data
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, cohen_kappa_score, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
@@ -46,12 +46,6 @@ print(f"Average mean absolute error (AMAE): {amae(y_val, svc_val_preds):.4f}")
 print(f"Maximum mean absolute error (MMAE): {mmae(y_val, svc_val_preds):.4f}") 
 print(f"Quadratic weighted kappa: {cohen_kappa_score(y_val, svc_val_preds, weights='quadratic'):.4f}\n")
 
-cm = confusion_matrix(y_val, svc_val_preds)
-disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[0,1,2,3,4])
-disp.plot()
-plt.title("Linear SVM — validation set")
-plt.show()
-
 svc_test_preds = svc_model.predict(X_test) 
 svc_test_acc = accuracy_score(y_test, svc_test_preds)
 print("TEST")
@@ -60,9 +54,3 @@ print(f"One-off accuracy: {accuracy_off1(y_test, svc_test_preds):.4f}")
 print(f"Average mean absolute error (AMAE): {amae(y_test, svc_test_preds):.4f}")
 print(f"Maximum mean absolute error (MMAE): {mmae(y_test, svc_test_preds):.4f}") 
 print(f"Quadratic weighted kappa: {cohen_kappa_score(y_test, svc_test_preds, weights='quadratic'):.4f}\n")
-
-cm = confusion_matrix(y_test, svc_test_preds)
-disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[0,1,2,3,4])
-disp.plot()
-plt.title("Linear SVM — test set")
-plt.show()

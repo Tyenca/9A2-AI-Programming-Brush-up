@@ -4,7 +4,7 @@ import torch
 import torch.optim as optim
 import torch.nn as nn
 from neural_net import Net
-from src.utils import normalize_dataset, get_dataloaders
+from utils import normalize_dataset, get_dataloaders
 
 #Normalize the dataset and get mean and std values
 mean, std = normalize_dataset()

@@ -1,5 +1,5 @@
 #Import packages
-from src.utils import normalize_dataset, get_datasets, prepare_sklearn_data
+from utils import normalize_dataset, get_datasets, prepare_sklearn_data
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, cohen_kappa_score, confusion_matrix, ConfusionMatrixDisplay
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
@@ -30,7 +30,7 @@ for k in k_values:
     if acc > best_knn_acc:
         best_knn_acc, best_k = acc, k
 
-# print(f"Best k: {best_k}")
+print(f"Best k: {best_k}")
 
 #  Retrain with best k
 knn_model = KNeighborsClassifier(n_neighbors=best_k, weights='distance')
@@ -45,12 +45,6 @@ print(f"Average mean absolute error (AMAE): {amae(y_val, knn_val_preds):.4f}")
 print(f"Maximum mean absolute error (MMAE): {mmae(y_val, knn_val_preds):.4f}")
 print(f"Quadratic weighted kappa: {cohen_kappa_score(y_val, knn_val_preds, weights='quadratic'):.4f}\n")
 
-cm = confusion_matrix(y_val, knn_val_preds)
-disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[0,1,2,3,4])
-disp.plot()
-plt.title("K-Nearest Neighbors — validation set")
-plt.show()
-
 knn_test_preds = knn_model.predict(X_test)
 knn_test_acc = accuracy_score(y_test, knn_test_preds)
 print("TEST")
@@ -59,9 +53,3 @@ print(f"One-off accuracy: {accuracy_off1(y_test, knn_test_preds):.4f}")
 print(f"Average mean absolute error (AMAE): {amae(y_test, knn_test_preds):.4f}")
 print(f"Maximum mean absolute error (MMAE): {mmae(y_test, knn_test_preds):.4f}")
 print(f"Quadratic weighted kappa: {cohen_kappa_score(y_test, knn_test_preds, weights='quadratic'):.4f}\n")
-
-cm = confusion_matrix(y_test, knn_test_preds)
-disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[0,1,2,3,4])
-disp.plot()
-plt.title("K-Nearest Neighbors — test set")
-plt.show()

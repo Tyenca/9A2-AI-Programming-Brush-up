@@ -8,7 +8,7 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import torch.nn as nn
 from dlordinal.metrics import amae, mmae, accuracy_off1
 from neural_net import Net
-from src.utils import normalize_dataset, get_dataloaders
+from utils import normalize_dataset, get_dataloaders
 
 #Normalize the dataset and get mean and std values
 mean, std = normalize_dataset()
@@ -24,7 +24,7 @@ optimizer = optim.Adam(net.parameters(), lr=0.001) # define optimizer with best 
 
 # Load the best saved model
 best_model = net
-best_model.load_state_dict(torch.load('saved_model.pth'))
+best_model.load_state_dict(torch.load('saved_model_lr0.001.pth'))
 best_model.eval()
 
 all_preds  = []
