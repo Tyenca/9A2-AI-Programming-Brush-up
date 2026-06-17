@@ -1,71 +1,16 @@
 #Packages
-from medmnist import RetinaMNIST
-import pandas as pd
 import numpy as np
 import torch
-import torchvision
-import torchvision.transforms as transforms
-from torchvision.transforms import v2
 import torch.optim as optim
-import torch.nn.functional as F
-import matplotlib.pyplot as plt
-from collections import Counter
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, cohen_kappa_score, confusion_matrix, ConfusionMatrixDisplay
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
-from sklearn.ensemble import RandomForestClassifier
-from torch.utils.data import DataLoader
 import torch.nn as nn
-import dlordinal
-from dlordinal.metrics import amae, mmae, accuracy_off1
-from sklearn.svm import LinearSVC
-from sklearn.neighbors import KNeighborsClassifier
+from neural_net import Net
+from src.utils import normalize_dataset, get_dataloaders
 
-mean =[np.float32(-0.0039968463), np.float32(-0.0029370212), np.float32(-0.002002367)]
-std = [np.float32(0.0019575264), np.float32(0.0028890595), np.float32(0.0034698865)]
-
-# return dataloaders for the RetinaMNIST dataset, given the mean and std for normalization and the batch size.
-def get_dataloaders(mean, std, batch_size=32): #  feed 32 images at a time
-    
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize(mean=mean, std=std)
-    ])
-
-    train_data = RetinaMNIST(split='train', download=True, transform=transform)
-    val_data   = RetinaMNIST(split='val',   download=True, transform=transform)
-    test_data  = RetinaMNIST(split='test',  download=True, transform=transform)
-
-    train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True) # shuffle the training data to help the model generalize better
-    val_loader   = DataLoader(val_data,   batch_size=batch_size, shuffle=False) # no need to shuffle validation and test data, because we only evaluate the model on them, not train on them
-    test_loader  = DataLoader(test_data,  batch_size=batch_size, shuffle=False)
-
-    return train_loader, val_loader, test_loader
-
+#Normalize the dataset and get mean and std values
+mean, std = normalize_dataset()
 # Wrap in Pytorch dataloader objects to enable batching and shuffling
 train_loader, val_loader, test_loader = get_dataloaders(mean=mean, std=std)
 
-
-# Define CNN model
-class Net(nn.Module):
-    def __init__(self):
-        super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(3,6,5)
-        self.pool = nn.MaxPool2d(2,2)
-        self.conv2 = nn.Conv2d(6,16,5)
-        self.fc1 = nn.Linear(16*4*4,120)
-        self.fc2 = nn.Linear(120,84)
-        self.fc3 = nn.Linear(84,5)
-    
-    def forward(self, x):
-        x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
-        x = x.view(-1, 16*4*4)
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
-    
 # the amount of passes through the train_loader
 epochs = 20
 

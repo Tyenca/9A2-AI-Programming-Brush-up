@@ -14,6 +14,6 @@ module load Python/3.12.3-GCCcore-13.3.0
 source ~/venv/bin/activate
 
 # Go to your repo (adjust if path differs)
-cd ~/9A2-AI-Programming-Brush-up
+cd ~/9A2-AI-Programming-Brush-up/src
 
 python test_sklearn.py
