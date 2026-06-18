@@ -1,0 +1,15 @@
+VALIDATION
+RF val accuracy: 0.4667
+One-off accuracy: 0.8500
+Average mean absolute error (AMAE): 0.9158
+Maximum mean absolute error (MMAE): 1.5000
+Quadratic weighted kappa: 0.6122
+
+TEST
+TEST results Random forest
+RF test accuracy: 0.4825
+One-off accuracy: 0.7800
+Average mean absolute error (AMAE): 1.1240
+Maximum mean absolute error (MMAE): 2.4000
+Quadratic weighted kappa: 0.5274
+

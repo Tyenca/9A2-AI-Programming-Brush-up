@@ -1,0 +1,14 @@
+VALIDATION
+SVC val accuracy: 0.4583
+One-off accuracy: 0.7250
+Average mean absolute error (AMAE): 1.0864
+Maximum mean absolute error (MMAE): 1.5000
+Quadratic weighted kappa: 0.4835
+
+TEST
+SVC test accuracy: 0.4725
+One-off accuracy: 0.7400
+Average mean absolute error (AMAE): 1.2300
+Maximum mean absolute error (MMAE): 2.1500
+Quadratic weighted kappa: 0.4784
+

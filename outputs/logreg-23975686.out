@@ -1,0 +1,15 @@
+VALIDATION
+LR val accuracy: 0.4000
+One-off accuracy: 0.6333
+Average mean absolute error (AMAE): 1.1295
+Maximum mean absolute error (MMAE): 1.7143
+Quadratic weighted kappa: 0.4530
+
+TEST
+TEST results Logistic regression
+LR test accuracy: 0.3750
+One-off accuracy: 0.6075
+Average mean absolute error (AMAE): 1.4029
+Maximum mean absolute error (MMAE): 1.7500
+Quadratic weighted kappa: 0.3626
+

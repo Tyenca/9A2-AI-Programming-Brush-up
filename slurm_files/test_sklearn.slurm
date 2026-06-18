@@ -5,7 +5,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=2G
-#SBATCH --output=%x-%j.out
+#SBATCH --output=outputs/%x-%j.out
 
 # Environment setup (normal shell commands, no #SBATCH)
 module purge
