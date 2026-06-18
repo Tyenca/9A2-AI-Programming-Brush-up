@@ -27,7 +27,7 @@ def normalize_dataset():
 
     return mean, std
 
-def get_dataloaders(mean, std, batch_size=32): #feed 32 images at a time
+def get_dataloaders(mean, std, batch_size=32, seed=42): #feed 32 images at a time
     # converts image to tensor and scales to [0, 1]
     transform = transforms.Compose([
         transforms.ToTensor(),
@@ -38,6 +38,11 @@ def get_dataloaders(mean, std, batch_size=32): #feed 32 images at a time
     train_data = RetinaMNIST(split='train', download=True, transform=transform)
     val_data   = RetinaMNIST(split='val',   download=True, transform=transform)
     test_data  = RetinaMNIST(split='test',  download=True, transform=transform)
+
+    # Set random seed for reproducibility
+    g = torch.Generator()
+    g.manual_seed(seed)
+
     #Transform into dataloader
     train_loader = DataLoader(train_data, batch_size=batch_size, shuffle=True) # shuffle the training data to help the model generalize better
     val_loader   = DataLoader(val_data,   batch_size=batch_size, shuffle=False) # no need to shuffle validation and test data, because we only evaluate the model on them, not train on them

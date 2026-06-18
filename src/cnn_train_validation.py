@@ -5,11 +5,22 @@ import torch.optim as optim
 import torch.nn as nn
 from neural_net import Net
 from utils import normalize_dataset, get_dataloaders
+import random
+from sklearn.metrics import accuracy_score, cohen_kappa_score
+from dlordinal.metrics import amae, mmae, accuracy_off1
+
+# Set random seeds for reproducibility
+seed = 42
+random.seed(seed)
+np.random.seed(seed)
+torch.manual_seed(seed)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
 
 #Normalize the dataset and get mean and std values
 mean, std = normalize_dataset()
 # Wrap in Pytorch dataloader objects to enable batching and shuffling
-train_loader, val_loader, test_loader, train_class_counts = get_dataloaders(mean=mean, std=std)
+train_loader, val_loader, test_loader, train_class_counts = get_dataloaders(mean=mean, std=std, seed=seed)
 
 # the amount of passes through the train_loader
 epochs = 20
@@ -86,7 +97,27 @@ for dropout in [0.1, 0.2, 0.3, 0.4, 0.5]:
             best_lr = lr
             best_dropout = dropout
 # prints the best validation loss and final validation accuracy for the current learning rate
-print(f"Best combination — dropout={best_dropout}, lr={best_lr}, val loss={best_val_loss:.4f}")
+print(f"Best combination — dropout={best_dropout}, lr={best_lr}, val loss={best_val_loss:.4f}\n")
 
-        
+# Load the best saved model and print performance metrics on the validation set
+best_net = Net(best_dropout)
+best_net.load_state_dict(torch.load(f'saved_model_dropout{best_dropout}_lr{best_lr}.pth'))
+best_net.eval()
 
+best_preds = []
+best_labels = []
+
+# turn off the gradient for evaluation, because we don't need to calculate gradients when evaluating the model, and it saves memory and makes it faster
+with torch.no_grad():
+    for val_inputs, val_labels in val_loader:
+        val_labels = val_labels.squeeze().long()
+        val_outputs = best_net(val_inputs)
+        _, predicted = torch.max(val_outputs, 1)
+        best_preds.extend(predicted.numpy())
+        best_labels.extend(val_labels.numpy())
+
+print(f"Accuracy:             {accuracy_score(best_labels, best_preds):.4f}")
+print(f"One-off accuracy:     {accuracy_off1(best_labels, best_preds):.4f}")
+print(f"AMAE:                 {amae(best_labels, best_preds):.4f}")
+print(f"MMAE:                 {mmae(best_labels, best_preds):.4f}")       
+print(f"QWK:                  {cohen_kappa_score(best_labels, best_preds, weights='quadratic'):.4f}")

@@ -15,7 +15,7 @@ mean, std = normalize_dataset()
 # Wrap in Pytorch dataloader objects to enable batching and shuffling
 train_loader, val_loader, test_loader, train_class_counts = get_dataloaders(mean=mean, std=std)
 
-dropout = 0.5 # best dropout found during training
+dropout = 0.3 # best dropout found during training
 learning_rate = 0.001 # best learning rate found during training
 
 net = Net(dropout)
@@ -60,10 +60,10 @@ test_amae   = amae(all_labels, all_preds)
 test_mmae   = mmae(all_labels, all_preds)
 
 print(f"Test accuracy:            {test_acc:.4f}")
-print(f"Quadratic weighted kappa: {test_qwk:.4f}")
 print(f"One-off accuracy:         {test_off1:.4f}")
 print(f"AMAE:                     {test_amae:.4f}")
 print(f"MMAE:                     {test_mmae:.4f}")
+print(f"Quadratic weighted kappa: {test_qwk:.4f}")
 
 # Plots confusion matrix showing predicted labels (x-axis) against true labels (y-axis)
 cm = confusion_matrix(all_labels, all_preds)

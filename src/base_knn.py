@@ -24,7 +24,7 @@ best_k, best_knn_acc = None, -1.0 # initialize variables to assure first loop wi
 # Find best performing k for k-nearest neighbors model
 for k in k_values:
     # Training model with various k values and saving the best
-    knn = KNeighborsClassifier(n_neighbors=k, weights='distance', random_state=42) # weights='balanced' to handle class imbalance in the dataset
+    knn = KNeighborsClassifier(n_neighbors=k, weights='distance') # weights='balanced' to handle class imbalance in the dataset
     knn.fit(X_train, y_train)
     acc = accuracy_score(y_val, knn.predict(X_val))
     if acc > best_knn_acc:
@@ -34,7 +34,7 @@ for k in k_values:
 print(f"Best k: {best_k}")
 
 #  Retrain with best k
-knn_model = KNeighborsClassifier(n_neighbors=best_k, weights='distance', random_state=42)
+knn_model = KNeighborsClassifier(n_neighbors=best_k, weights='distance')
 knn_model.fit(X_train, y_train)
 
 #validation

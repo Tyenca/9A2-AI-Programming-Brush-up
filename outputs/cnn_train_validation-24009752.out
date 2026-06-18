@@ -1,0 +1,6 @@
+Best combination — dropout=0.3, lr=0.001, val loss=1.2051
+Accuracy:             0.5000
+QWK:                  0.7143
+One-off accuracy:     0.8917
+AMAE:                 0.6808
+MMAE:                 1.0357
