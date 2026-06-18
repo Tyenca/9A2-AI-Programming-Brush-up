@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=logreg
+#SBATCH --job-name=base_logreg
 #SBATCH --partition=rome
 #SBATCH --time=00:15:00
 #SBATCH --ntasks=1
