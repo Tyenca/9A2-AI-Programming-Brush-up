@@ -14,12 +14,15 @@ train_loader, val_loader, test_loader, train_class_counts = get_dataloaders(mean
 # the amount of passes through the train_loader
 epochs = 20
 
+best_val_loss = np.inf
+best_lr = None
+best_dropout = None
 # test different learning rates to find the best one for optimizer Adam
 for dropout in [0.1, 0.2, 0.3, 0.4, 0.5]:
     for lr in [0.01, 0.001, 0.0001, 0.00001]:
         # Reinitialise model and optimizer for each lr
 
-        net = Net()
+        net = Net(dropout)
 
         # Define class weights to handle class imbalance in the dataset
         weights = 1.0 / train_class_counts                # Inverse of class counts to give more weight to underrepresented classes
@@ -76,9 +79,14 @@ for dropout in [0.1, 0.2, 0.3, 0.4, 0.5]:
             #Saves a model if its validation loss is lower than the currently lowest validation loss
             if min_validation_loss > validation_loss:
                 min_validation_loss = validation_loss
-                torch.save(net.state_dict(), f'saved_model_lr{lr}.pth')
+                torch.save(net.state_dict(), f'saved_model_dropout{dropout}_lr{lr}.pth')  # updated filename
 
-        # prints the best validation loss and final validation accuracy for the current learning rate
-        print(f"lr={lr} — best val loss: {min_validation_loss:.4f}, final val accuracy: {val_accuracy:.4f}")
-        print(f"dropout={dropout}, lr={lr} — best val loss: {min_validation_loss:.4f}, final val accuracy: {val_accuracy:.4f}\n")
+        if min_validation_loss < best_val_loss:
+            best_val_loss = min_validation_loss
+            best_lr = lr
+            best_dropout = dropout
+# prints the best validation loss and final validation accuracy for the current learning rate
+print(f"Best combination — dropout={best_dropout}, lr={best_lr}, val loss={best_val_loss:.4f}")
+
+        
 

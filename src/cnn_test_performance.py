@@ -15,7 +15,7 @@ mean, std = normalize_dataset()
 # Wrap in Pytorch dataloader objects to enable batching and shuffling
 train_loader, val_loader, test_loader, train_class_counts = get_dataloaders(mean=mean, std=std)
 
-dropout = 0.3 # best dropout found during training
+dropout = 0.5 # best dropout found during training
 learning_rate = 0.001 # best learning rate found during training
 
 net = Net(dropout)
@@ -31,7 +31,7 @@ optimizer = optim.Adam(net.parameters(), lr=learning_rate) # define optimizer wi
 
 # Load the best saved model
 best_model = net
-best_model.load_state_dict(torch.load('saved_model_lr0.001.pth'))
+best_model.load_state_dict(torch.load(f'saved_model_dropout{dropout}_lr{learning_rate}.pth'))
 best_model.eval()
 
 all_preds  = []
