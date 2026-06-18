@@ -9,7 +9,7 @@ from utils import normalize_dataset, get_dataloaders
 #Normalize the dataset and get mean and std values
 mean, std = normalize_dataset()
 # Wrap in Pytorch dataloader objects to enable batching and shuffling
-train_loader, val_loader, test_loader = get_dataloaders(mean=mean, std=std)
+train_loader, val_loader, test_loader, train_class_counts = get_dataloaders(mean=mean, std=std)
 
 # the amount of passes through the train_loader
 epochs = 20
@@ -17,8 +17,14 @@ epochs = 20
 # test different learning rates to find the best one for optimizer Adam
 for lr in [0.01, 0.001, 0.0001, 0.00001]:
     # Reinitialise model and optimizer for each lr
+
     net = Net()
-    criterion = nn.CrossEntropyLoss()                   # Define loss function 
+
+    # Define class weights to handle class imbalance in the dataset
+    weights = 1.0 / train_class_counts                # Inverse of class counts to give more weight to underrepresented classes
+    weights = weights / weights.sum()                 # normalise so they sum to 1
+    criterion = nn.CrossEntropyLoss(weight=weights)   # Assigns weights to the loss function to handle class imbalance in the dataset
+
     optimizer = optim.Adam(net.parameters(), lr=lr)     # Define optimizer with the current learning rate
     min_validation_loss = np.inf                        # initialises a loss variable for validation loss
 

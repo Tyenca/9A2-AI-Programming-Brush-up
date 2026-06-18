@@ -5,6 +5,7 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 from dlordinal.metrics import amae, mmae, accuracy_off1
 from sklearn.metrics import accuracy_score, cohen_kappa_score, confusion_matrix, ConfusionMatrixDisplay
+import torch
 
 def normalize_dataset():
     train_data_raw = RetinaMNIST(split="train", download=True)
@@ -42,7 +43,11 @@ def get_dataloaders(mean, std, batch_size=32): #feed 32 images at a time
     val_loader   = DataLoader(val_data,   batch_size=batch_size, shuffle=False) # no need to shuffle validation and test data, because we only evaluate the model on them, not train on them
     test_loader  = DataLoader(test_data,  batch_size=batch_size, shuffle=False)
 
-    return train_loader, val_loader, test_loader
+    # Count the number of samples in each class in the training set, needed for criterion weights
+    train_labels = np.array([train_data[i][1].item() for i in range(len(train_data))])
+    train_class_counts = torch.tensor(np.bincount(train_labels), dtype=torch.float)
+
+    return train_loader, val_loader, test_loader, train_class_counts
 
 
 # return dataloaders for the RetinaMNIST dataset, given the mean and std for normalization and the batch size.
