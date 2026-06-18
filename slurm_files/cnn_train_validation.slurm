@@ -16,4 +16,4 @@ source ~/venv/bin/activate
 # Go to your repo (adjust if path differs)
 cd ~/9A2-AI-Programming-Brush-up/src
 
-python nn_train_validation.py
+python cnn_train_validation.py
