@@ -92,7 +92,7 @@ for dropout in [0.1, 0.2, 0.3, 0.4, 0.5]:
             #Saves a model if its validation loss is lower than the currently lowest validation loss
             if min_validation_loss > validation_loss:
                 min_validation_loss = validation_loss
-                torch.save(net.state_dict(), f'saved_model_dropout{dropout}_lr{lr}.pth')  # updated filename
+                torch.save(net.state_dict(), f'../outputs/saved_model_dropout{dropout}_lr{lr}.pth')  # updated filename
 
         if min_validation_loss < best_val_loss:
             best_val_loss = min_validation_loss
@@ -103,7 +103,7 @@ print(f"Best combination — dropout={best_dropout}, lr={best_lr}, val loss={bes
 
 # Load the best saved model and print performance metrics on the validation set
 best_net = Net(best_dropout)
-best_net.load_state_dict(torch.load(f'saved_model_dropout{best_dropout}_lr{best_lr}.pth'))
+best_net.load_state_dict(torch.load(f'../outputs/saved_model_dropout{best_dropout}_lr{best_lr}.pth'))
 best_net.eval()
 
 best_preds = []
@@ -129,5 +129,5 @@ cm = confusion_matrix(best_labels, best_preds)
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[0,1,2,3,4])
 disp.plot()
 plt.title("CNN — validation set")
-plt.savefig(f"cnn_train_confusion_matrix.png")
+plt.savefig(f"../outputs/cnn_train_confusion_matrix.png")
 plt.close()

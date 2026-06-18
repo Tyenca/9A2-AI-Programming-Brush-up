@@ -6,7 +6,6 @@ Maximum mean absolute error (MMAE): 1.7143
 Quadratic weighted kappa: 0.4530
 
 TEST
-TEST results Logistic regression
 LR test accuracy: 0.3750
 One-off accuracy: 0.6075
 Average mean absolute error (AMAE): 1.4029

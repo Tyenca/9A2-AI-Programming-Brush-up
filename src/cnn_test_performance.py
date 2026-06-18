@@ -31,7 +31,7 @@ optimizer = optim.Adam(net.parameters(), lr=learning_rate) # define optimizer wi
 
 # Load the best saved model
 best_model = net
-best_model.load_state_dict(torch.load(f'saved_model_dropout{dropout}_lr{learning_rate}.pth'))
+best_model.load_state_dict(torch.load(f'../outputs/saved_model_dropout{dropout}_lr{learning_rate}.pth'))
 best_model.eval()
 
 all_preds  = []
@@ -70,5 +70,5 @@ cm = confusion_matrix(all_labels, all_preds)
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[0,1,2,3,4])
 disp.plot()
 plt.title("CNN — test set")
-plt.savefig(f"cnn_test_confusion_matrix.png")
+plt.savefig("../outputs/cnn_test_confusion_matrix.png")
 plt.close()
