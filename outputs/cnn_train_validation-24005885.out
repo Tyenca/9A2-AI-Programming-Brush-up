@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/gpfs/home3/scur0327/9A2-AI-Programming-Brush-up/src/cnn_train_validation.py", line 22, in <module>
+    net = Net()
+          ^^^^^
+TypeError: Net.__init__() missing 1 required positional argument: 'dropout'

@@ -3,7 +3,7 @@ import torch.nn.functional as F
 
 # Define CNN model
 class Net(nn.Module):
-    def __init__(self):
+    def __init__(self, dropout):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(3,6,5)
         self.pool = nn.MaxPool2d(2,2)
@@ -11,7 +11,7 @@ class Net(nn.Module):
         self.fc1 = nn.Linear(16*4*4,120)
         self.fc2 = nn.Linear(120,84)
         self.fc3 = nn.Linear(84,5)
-        self.dropout = nn.Dropout(0.3)
+        self.dropout = nn.Dropout(dropout)
     
     def forward(self, x):
         x = self.pool(F.relu(self.conv1(x)))

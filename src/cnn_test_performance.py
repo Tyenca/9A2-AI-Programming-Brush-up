@@ -15,7 +15,10 @@ mean, std = normalize_dataset()
 # Wrap in Pytorch dataloader objects to enable batching and shuffling
 train_loader, val_loader, test_loader, train_class_counts = get_dataloaders(mean=mean, std=std)
 
-net = Net()
+dropout = 0.3 # best dropout found during training
+learning_rate = 0.001 # best learning rate found during training
+
+net = Net(dropout)
 val_preds  = []
 val_all_labels = []
 # Define loss function and optimizer
@@ -24,7 +27,7 @@ weights = 1.0 / train_class_counts                # Inverse of class counts to g
 weights = weights / weights.sum()                 # normalise so they sum to 1
 criterion = nn.CrossEntropyLoss(weight=weights)   # Assigns weights to the loss function to handle class imbalance in the dataset
 
-optimizer = optim.Adam(net.parameters(), lr=0.001) # define optimizer with best learning rate found in test_optimizer.py 
+optimizer = optim.Adam(net.parameters(), lr=learning_rate) # define optimizer with best learning rate found in test_optimizer.py 
 
 # Load the best saved model
 best_model = net
