@@ -4,9 +4,11 @@ import torch
 import torch.optim as optim
 import torch.nn as nn
 from neural_net import Net
+import matplotlib.pyplot as plt
 from utils import normalize_dataset, get_dataloaders
 import random
-from sklearn.metrics import accuracy_score, cohen_kappa_score
+from sklearn.metrics import accuracy_score, cohen_kappa_score, ConfusionMatrixDisplay
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from dlordinal.metrics import amae, mmae, accuracy_off1
 
 # Set random seeds for reproducibility
@@ -121,3 +123,11 @@ print(f"One-off accuracy:     {accuracy_off1(best_labels, best_preds):.4f}")
 print(f"AMAE:                 {amae(best_labels, best_preds):.4f}")
 print(f"MMAE:                 {mmae(best_labels, best_preds):.4f}")       
 print(f"QWK:                  {cohen_kappa_score(best_labels, best_preds, weights='quadratic'):.4f}")
+
+# Plots confusion matrix showing predicted labels (x-axis) against true labels (y-axis)
+cm = confusion_matrix(best_labels, best_preds)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[0,1,2,3,4])
+disp.plot()
+plt.title("CNN — validation set")
+plt.savefig(f"cnn_train_confusion_matrix.png")
+plt.close()

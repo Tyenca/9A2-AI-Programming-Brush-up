@@ -25,7 +25,7 @@ val_all_labels = []
 # Define class weights to handle class imbalance in the dataset
 weights = 1.0 / train_class_counts                # Inverse of class counts to give more weight to underrepresented classes
 weights = weights / weights.sum()                 # normalise so they sum to 1
-criterion = nn.CrossEntropyLoss(weight=weights)   # Assigns weights to the loss function to handle class imbalance in the dataset
+criterion = nn.CrossEntropyLoss(weight=weights)        # Assigns weights to the loss function to handle class imbalance in the dataset
 
 optimizer = optim.Adam(net.parameters(), lr=learning_rate) # define optimizer with best learning rate found in test_optimizer.py 
 
@@ -70,4 +70,5 @@ cm = confusion_matrix(all_labels, all_preds)
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=[0,1,2,3,4])
 disp.plot()
 plt.title("CNN — test set")
-plt.show()     
+plt.savefig(f"cnn_test_confusion_matrix.png")
+plt.close()
